@@ -1,0 +1,89 @@
+{
+  "extends": "airbnb",
+  "parser": "babel-eslint",
+  "rules": {
+    "arrow-parens": "off",
+    "react/react-in-jsx-scope": "off",
+    "no-use-before-define": [
+      "error",
+      {
+        "functions": false,
+        "classes": false,
+        "variables": false
+      }
+    ],
+    "react/jsx-filename-extension": [
+      "error",
+      {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    ],
+    "react/forbid-prop-types": "off",
+    "react/no-array-index-key": "warn",
+    "no-plusplus": "off",
+    "no-unused-vars": "warn",
+    "jsx-a11y/href-no-hash": "off",
+    "one-var": "off",
+    "no-bitwise": "off",
+    "no-return-assign": "off",
+    "no-param-reassign": "off",
+    "no-unused-expressions": "off",
+    "react/require-default-props": "off",
+    "no-underscore-dangle": "off",
+    "class-methods-use-this": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "react/sort-comp": [
+      "warn",
+      {
+        "order": [
+          "react-statics",
+          "state",
+          "lifecycle",
+          "/^get.+$/",
+          "/^(on|handle).+$/",
+          "everything-else",
+          "rendering"
+        ],
+        "groups": {
+          "react-statics": [
+            "displayName",
+            "propTypes",
+            "contextTypes",
+            "childContextTypes",
+            "defaultProps",
+            "statics"
+          ],
+          "lifecycle": [
+            "getChildContext",
+            "constructor",
+            "componentWillMount",
+            "componentDidMount",
+            "componentWillReceiveProps",
+            "shouldComponentUpdate",
+            "componentWillUpdate",
+            "componentDidUpdate",
+            "componentWillUnmount"
+          ],
+          "rendering": [
+            "/^render.+$/",
+            "render"
+          ]
+        }
+      }
+    ],
+    "import/exports-last": "error",
+    "import/no-anonymous-default-export": [
+      "error",
+      {
+        "allowArray": true,
+        "allowObject": true
+      }
+    ],
+    "import/no-extraneous-dependencies": "off",
+    "import/no-unresolved": "off",
+    "import/extensions": "off"
+  }
+}
