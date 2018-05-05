@@ -1,6 +1,4 @@
-import { Container } from 'unstated';
-
-class DataStore extends Container {
+class DataStore {
   state = {};
 
   get(key, url) {
@@ -17,6 +15,10 @@ class DataStore extends Container {
     return fetch(url)
       .then(data => data.json())
       .then(json => this.setState({ [url]: [key], data: { ...this.state.data, [key]: json } }));
+  }
+
+  setState(nextState) {
+    this.state = { ...this.state, ...nextState };
   }
 }
 

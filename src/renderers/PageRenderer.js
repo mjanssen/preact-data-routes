@@ -1,6 +1,8 @@
 import { Component } from 'preact';
-import DataStore from '../store/DataStore';
-import { getResourcesForPage, pageResourcesLoaded } from '../utils/router';
+import { getResourcesForPage } from '../utils/router';
+import store from '../store/store';
+
+const { dispatch } = store;
 
 export default class PageRenderer extends Component {
   state = {
@@ -22,24 +24,33 @@ export default class PageRenderer extends Component {
       }
     }
 
-    getResourcesForPage(page).then(data => {
-      if (data.resourcesLoaded) {
-        this.updateDataState(data, true);
-      }
-    });
+    dispatch({ type: 'data/loadDataAsync', payload: page });
+
+    // getResourcesForPage(page).then(data => {
+    //   if (data.resourcesLoaded) {
+    //     this.updateDataState(data, true);
+    //   }
+    // });
   }
 
-  shouldComponentUpdate() {
-    getResourcesForPage(this.props.page).then(data => {
-      if (data.resourcesLoaded && this.state.render === false) {
-        this.updateDataState(data, true);
-        return true;
-      }
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('this.props', this.props);
+    Object.keys(store.getState().data).forEach(url => {});
+    console.log('nextProps', nextProps);
+    //   if (nextState.render) {
+    //     return true;
+    //   }
 
-      return true;
-    });
+    //   getResourcesForPage(this.props.page).then(data => {
+    //     if (data.resourcesLoaded && this.state.render === false) {
+    //       this.updateDataState(data, true);
+    //       return true;
+    //     }
 
-    return true;
+    //     return true;
+    //   });
+
+    //   return true;
   }
 
   setPageComponent = component => this.setState({ page: component });

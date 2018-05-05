@@ -1,5 +1,6 @@
-import { Provider, Subscribe, Container } from 'unstated';
+import { Provider } from 'preact-redux';
+import store from '../store/store';
 
-export default function StateContainer(props) {
-  return <Provider>{props.children}</Provider>;
+export default function StateContainer() {
+  return <Provider store={store}>{this.props.children}</Provider>;
 }

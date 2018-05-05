@@ -1,19 +1,11 @@
-import { Subscribe } from 'unstated';
-import Router from '../components/router/Router';
 import Header from '../components/header/Header';
-import DataStore from '../store/DataStore';
+import Router from '../components/router/Router';
 
 export default function RenderContainer() {
   return (
-    <Subscribe to={[DataStore]}>
-      {data => {
-        return (
-          <div>
-            <Header />
-            <Router data={data} />
-          </div>
-        );
-      }}
-    </Subscribe>
+    <div>
+      <Header />
+      <Router />
+    </div>
   );
 }
