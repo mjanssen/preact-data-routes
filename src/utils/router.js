@@ -1,19 +1,10 @@
 import _routes from '../settings/routes';
 import { fetchFileOrUrl } from './fetch';
+import store from '../store/store';
 
 export const routes = _routes;
 
-export function getRoutes() {
-  return routes;
-}
-
-export function getResources() {
-  Object.entries(routes).map(route => {
-    const routeData = route[1];
-  });
-}
-
-export function getResourcesForPage(page, state) {
+export function fetchResourcesForPage(page, state) {
   if (typeof routes[page].data === 'undefined') {
     return null;
   }
@@ -26,7 +17,6 @@ export function getResourcesForPage(page, state) {
     const urlData = {};
 
     routes[page].data.forEach(getApi => {
-      const key = getApi.name;
       const apiData = getApi();
       const url = apiData.api;
 
@@ -51,56 +41,23 @@ export function getResourcesForPage(page, state) {
   });
 }
 
-// export function getResourcesForPage2(page, load = true) {
-//   const pageData = {};
-//   let resourcesLoaded = true;
-
-//   return new Promise(resolve => {
-//     if (typeof page === 'undefined') {
-//       return resolve(false);
-//     }
-
-//     if (typeof routes[page].data !== 'undefined') {
-//       routes[page].data.forEach(getApi => {
-//         const key = getApi.name;
-//         const apiData = getApi();
-//         const url = apiData.api;
-
-//         if (typeof DataStore.state[url] !== 'undefined') {
-//           pageData[key] = DataStore.state[url];
-//         } else {
-//           resourcesLoaded = false;
-//           if (load) {
-//             fetchFileOrUrl(url).then(data => {
-//               DataStore.save(url, data);
-//             });
-//           }
-//         }
-//       });
-//     }
-
-//     resolve({ pageData, resourcesLoaded });
-//   });
-// }
-
-export function pageResourcesLoaded(page) {
-  if (typeof page === 'undefined') {
-    return false;
-  }
-
+export function getPageResources(page) {
   const pageData = {};
   let resourcesLoaded = true;
+  const currentData = store.getState().data;
   if (typeof routes[page].data !== 'undefined') {
     routes[page].data.forEach(getApi => {
+      const key = getApi.name;
       const apiData = getApi();
       const url = apiData.api;
-      if (typeof DataStore.state[url] === 'undefined') {
+      if (typeof currentData[url] === 'undefined') {
         resourcesLoaded = false;
       }
+      pageData[key] = currentData[url];
     });
   }
 
-  return resourcesLoaded;
+  return resourcesLoaded && pageData;
 }
 
-export default { getRoutes, getResources, routes, getResourcesForPage, pageResourcesLoaded };
+export default { routes, fetchResourcesForPage, getPageResources };

@@ -1,9 +1,15 @@
 import { Component } from 'preact';
-import { getResourcesForPage } from '../utils/router';
+import { getPageResources } from '../utils/router';
+import { connect } from 'preact-redux';
 import store from '../store/store';
 
 const { dispatch } = store;
 
+const mapState = state => ({
+  data: state.data,
+});
+
+@connect(mapState)
 export default class PageRenderer extends Component {
   state = {
     page: null,
@@ -13,52 +19,43 @@ export default class PageRenderer extends Component {
 
   componentDidMount() {
     const { routeData, page } = this.props;
+    const render = getPageResources(page);
 
     if (routeData.component) {
       if (typeof routeData.component === 'function') {
-        this.setPageComponent(routeData.component);
+        this.setPageComponent(routeData.component, render);
       } else {
         System.import(`../pages/${routeData.component}`).then(module =>
-          this.setPageComponent(module.default)
+          this.setPageComponent(module.default, render)
         );
       }
     }
 
     dispatch({ type: 'data/loadDataAsync', payload: page });
-
-    // getResourcesForPage(page).then(data => {
-    //   if (data.resourcesLoaded) {
-    //     this.updateDataState(data, true);
-    //   }
-    // });
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('this.props', this.props);
-    Object.keys(store.getState().data).forEach(url => {});
-    console.log('nextProps', nextProps);
-    //   if (nextState.render) {
-    //     return true;
-    //   }
+    const pageResources = getPageResources(this.props.page);
 
-    //   getResourcesForPage(this.props.page).then(data => {
-    //     if (data.resourcesLoaded && this.state.render === false) {
-    //       this.updateDataState(data, true);
-    //       return true;
-    //     }
+    if (pageResources) {
+      if (this.state.render === false) {
+        this.setState({
+          render: true,
+          data: pageResources,
+        });
+      }
 
-    //     return true;
-    //   });
+      return true;
+    }
 
-    //   return true;
+    return false;
   }
 
-  setPageComponent = component => this.setState({ page: component });
-  updateDataState = (data, render = false) => this.setState({ data, render });
+  setPageComponent = (component, render) => this.setState({ page: component, render });
 
   render() {
     const { data } = this.state;
     const Page = this.state.page;
-    return this.state.render && <Page data={data.pageData} />;
+    return this.state.render && <Page data={data} />;
   }
 }

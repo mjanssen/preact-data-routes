@@ -1,7 +1,7 @@
-import { getResourcesForPage } from '../../utils/router';
+import { fetchResourcesForPage } from '../../utils/router';
 
 export default {
-  state: { data: {} }, // initial state
+  state: { data: {} },
   reducers: {
     // handle state changes with pure functions
     storeData(state, payload) {
@@ -13,7 +13,7 @@ export default {
   },
   effects: {
     async loadDataAsync(page, rootState) {
-      const data = await getResourcesForPage(page, rootState.data);
+      const data = await fetchResourcesForPage(page, rootState.data);
       this.storeData(data);
     },
   },
