@@ -4,6 +4,10 @@ const USER = () => ({
   api: 'https://jsonplaceholder.typicode.com/posts/1',
 });
 
+const POST = () => ({
+  api: 'https://jsonplaceholder.typicode.com/posts/2',
+});
+
 export default {
   home: {
     path: '/',
@@ -12,6 +16,6 @@ export default {
   about: {
     path: '/about',
     component: 'About',
-    data: [USER],
+    data: [USER, POST],
   },
 };
