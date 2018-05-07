@@ -9,8 +9,7 @@ const mapState = state => ({
   data: state.data,
 });
 
-@connect(mapState)
-export default class PageRenderer extends Component {
+class PageRenderer extends Component {
   state = {
     page: null,
     render: false,
@@ -19,23 +18,27 @@ export default class PageRenderer extends Component {
 
   componentDidMount() {
     const { routeData, page } = this.props;
-    const render = getPageResources(page);
+    const hasResources = this.pageHasResources();
+    const render = !hasResources;
 
     if (routeData.component) {
       if (typeof routeData.component === 'function') {
         this.setPageComponent(routeData.component, render);
       } else {
-        System.import(`../pages/${routeData.component}`).then(module =>
+        import(`../pages/${routeData.component}`).then(module =>
           this.setPageComponent(module.default, render)
         );
       }
     }
 
-    dispatch({ type: 'data/loadDataAsync', payload: page });
+    hasResources && dispatch({ type: 'data/loadDataAsync', payload: page });
   }
 
+  pageHasResources = () =>
+    typeof this.props.page.data === 'undefined' ? false : getPageResources(this.props.page);
+
   shouldComponentUpdate(nextProps, nextState) {
-    const pageResources = getPageResources(this.props.page);
+    const pageResources = this.pageHasResources() ? false : getPageResources(this.props.page);
 
     if (pageResources) {
       if (this.state.render === false) {
@@ -48,14 +51,19 @@ export default class PageRenderer extends Component {
       return true;
     }
 
-    return false;
+    return true;
   }
 
-  setPageComponent = (component, render) => this.setState({ page: component, render });
+  setPageComponent = (component, render) => {
+    this.setState({ page: component, render });
+  };
 
   render() {
     const { data } = this.state;
     const Page = this.state.page;
+    console.log('this.state', this.state);
     return this.state.render && <Page data={data} />;
   }
 }
+
+export default connect(mapState)(PageRenderer);
