@@ -35,7 +35,7 @@ class PageRenderer extends Component {
   }
 
   pageHasResources = () =>
-    typeof this.props.page.data === 'undefined' ? false : getPageResources(this.props.page);
+    typeof this.props.routeData.data === 'undefined' ? false : getPageResources(this.props.page);
 
   shouldComponentUpdate(nextProps, nextState) {
     const pageResources = this.pageHasResources() ? false : getPageResources(this.props.page);

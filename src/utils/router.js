@@ -50,6 +50,7 @@ export function getPageResources(page) {
       const key = getApi.name;
       const apiData = getApi();
       const url = apiData.api;
+
       if (typeof currentData[url] === 'undefined') {
         resourcesLoaded = false;
       }
