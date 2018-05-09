@@ -1,4 +1,4 @@
-import { Provider } from 'preact-redux';
+import { Provider } from 'unistore/preact';
 import store from '../store/store';
 
 export default function StateContainer() {

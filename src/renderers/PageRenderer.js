@@ -1,13 +1,7 @@
 import { Component } from 'preact';
 import { getPageResources } from '../utils/router';
-import { connect } from 'preact-redux';
-import store from '../store/store';
-
-const { dispatch } = store;
-
-const mapState = state => ({
-  data: state.data,
-});
+import { connect } from 'unistore/preact';
+import dataActions from '../store/actions/data';
 
 class PageRenderer extends Component {
   state = {
@@ -32,9 +26,7 @@ class PageRenderer extends Component {
       }
     }
 
-    hasResources &&
-      preloadedData === false &&
-      dispatch({ type: 'data/loadDataAsync', payload: page });
+    hasResources && preloadedData === false && this.props.loadDataAsync(page);
   }
 
   pageHasResources = () => (typeof this.props.routeData.data === 'undefined' ? false : true);
@@ -68,4 +60,4 @@ class PageRenderer extends Component {
   }
 }
 
-export default connect(mapState)(PageRenderer);
+export default connect('data', dataActions)(PageRenderer);
