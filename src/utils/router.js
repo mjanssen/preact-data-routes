@@ -1,6 +1,7 @@
 import _routes from '../settings/routes';
 import { fetchFileOrUrl } from './fetch';
 import store from '../store/store';
+import data from '../settings/data';
 
 export const routes = _routes;
 
@@ -16,18 +17,11 @@ export function fetchResourcesForPage(page, state) {
     };
     const urlData = {};
 
-    routes[page].data.forEach(getApi => {
-      const apiData = getApi();
+    routes[page].data.forEach(apiName => {
+      const api = data[apiName];
+      const apiData = api();
       const url = apiData.api;
-
-      if (typeof state[url] !== 'undefined') {
-        counter.current += 1;
-        urlData[url] = state[url];
-
-        if (counter.current === counter.total) {
-          resolve(urlData);
-        }
-      } else {
+      if (typeof state[url] === 'undefined') {
         fetchFileOrUrl(url).then(data => {
           counter.current += 1;
           urlData[url] = data;
@@ -36,6 +30,8 @@ export function fetchResourcesForPage(page, state) {
             resolve(urlData);
           }
         });
+      } else {
+        counter.current += 1;
       }
     });
   });
@@ -47,9 +43,10 @@ export function getPageResources(page) {
   const currentData = store.getState().data;
 
   if (typeof routes[page].data !== 'undefined') {
-    routes[page].data.forEach(getApi => {
-      const key = getApi.name;
-      const apiData = getApi();
+    routes[page].data.forEach(apiName => {
+      const key = apiName;
+      const api = data[apiName];
+      const apiData = api();
       const url = apiData.api;
 
       if (typeof currentData[url] === 'undefined') {
