@@ -39,5 +39,10 @@ module.exports = {
       },
     ],
   },
-  plugins: [new ExtractTextPlugin({ filename: 'app.css' })],
+  plugins: [
+    new webpack.ProvidePlugin({
+      h: ['preact', 'h'],
+    }),
+    new ExtractTextPlugin({ filename: 'app.css' }),
+  ],
 };
