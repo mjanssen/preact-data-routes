@@ -19,7 +19,8 @@ class PageRenderer extends Component {
   componentDidMount() {
     const { routeData, page } = this.props;
     const hasResources = this.pageHasResources();
-    const render = !hasResources;
+    const dataPreloaded = hasResources ? getPageResources(this.props.page) : true;
+    const render = hasResources === false || (hasResources && dataPreloaded !== false);
 
     if (routeData.component) {
       if (typeof routeData.component === 'function') {
@@ -31,7 +32,9 @@ class PageRenderer extends Component {
       }
     }
 
-    hasResources && dispatch({ type: 'data/loadDataAsync', payload: page });
+    hasResources &&
+      dataPreloaded === false &&
+      dispatch({ type: 'data/loadDataAsync', payload: page });
   }
 
   pageHasResources = () => (typeof this.props.routeData.data === 'undefined' ? false : true);
@@ -60,7 +63,7 @@ class PageRenderer extends Component {
   render() {
     const { data } = this.state;
     const Page = this.state.page;
-    console.log('this.state', this.state);
+
     return this.state.render && <Page data={data} />;
   }
 }

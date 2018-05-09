@@ -1,7 +1,7 @@
 import { fetchResourcesForPage } from '../../utils/router';
 
 export default {
-  state: { data: {} },
+  state: {},
   reducers: {
     // handle state changes with pure functions
     storeData(state, payload) {
