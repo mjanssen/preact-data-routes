@@ -45,6 +45,7 @@ export function getPageResources(page) {
   const pageData = {};
   let resourcesLoaded = true;
   const currentData = store.getState().data;
+
   if (typeof routes[page].data !== 'undefined') {
     routes[page].data.forEach(getApi => {
       const key = getApi.name;

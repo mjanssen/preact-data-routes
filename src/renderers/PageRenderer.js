@@ -34,11 +34,10 @@ class PageRenderer extends Component {
     hasResources && dispatch({ type: 'data/loadDataAsync', payload: page });
   }
 
-  pageHasResources = () =>
-    typeof this.props.routeData.data === 'undefined' ? false : getPageResources(this.props.page);
+  pageHasResources = () => (typeof this.props.routeData.data === 'undefined' ? false : true);
 
   shouldComponentUpdate(nextProps, nextState) {
-    const pageResources = this.pageHasResources() ? false : getPageResources(this.props.page);
+    const pageResources = this.pageHasResources() ? getPageResources(this.props.page) : false;
 
     if (pageResources) {
       if (this.state.render === false) {
