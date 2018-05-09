@@ -1,4 +1,4 @@
-import { USER, POST } from './data';
+import { USER, POST, COMPANY_DATA } from './data';
 import Home from '../pages/Home';
 
 export default {
@@ -10,5 +10,10 @@ export default {
     path: '/about',
     component: 'About',
     data: [USER, POST],
+  },
+  contact: {
+    path: '/contact',
+    component: 'Contact',
+    data: [USER, COMPANY_DATA],
   },
 };

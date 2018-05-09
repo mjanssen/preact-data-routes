@@ -14,6 +14,11 @@ export default function Header() {
             About
           </Link>
         </li>
+        <li>
+          <Link activeClassName="active" href="/contact">
+            Contact
+          </Link>
+        </li>
       </ul>
     </div>
   );
